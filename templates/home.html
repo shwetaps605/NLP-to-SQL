@@ -1,0 +1,167 @@
+<html>
+  <title>Candice</title>
+  <head>
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://user-images.githubusercontent.com/20112458/49326597-773b7280-f57a-11e8-853d-20ed61d18b0d.png"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        background-color: black;
+      }
+      h1 {
+        background-color: #e0e0e0;
+        display: flex;
+        font-size: 40px;
+        margin: 0;
+        padding: 14px;
+        color:black;
+        font-weight: normal;
+        box-shadow: 1px 2px 4px rgba(0,0,0,0.5);
+      }
+      h3 {
+        color: black;
+        font-size: 20px;
+        margin-top: 3px;
+        text-align: center;
+      }
+      #chatbox {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        margin-top: 20px;
+      }
+      #userInput {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        margin-top: 60px;
+
+      }
+      #textInput {
+        width: 90%;
+        border-bottom: 3px solid black;
+        font-family: monospace;
+        font-size: 17px;
+      }
+      .userText {
+        padding: 10px;
+        color: white;
+        font-size: 17px;
+        text-align: right;
+        line-height: 30px;
+        border-radius: 20px;
+        color: white;
+        padding: 10px;
+        width: 100%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      }
+      .userText span {
+        background-color: #962861;
+        padding: 10px;
+        border-radius: 20px;
+        box-shadow: 1px 2px 4px rgba(0,0,0,0.5);
+        border: 1px solid black;
+        font-style: normal;
+        color: white;
+        padding: 10px;
+        width: 100%;
+
+    }
+      .botText {
+        color: white;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 17px;
+        text-align: left;
+        line-height: 30px;
+      }
+      
+      #tidbit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+      }
+      .boxed {
+        background-image: url("https://www.fonewalls.com/wp-content/uploads/2020/02/WhatsApp-Background-Wallpaper-33.jpg");
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+        margin-top: 40px;
+        border: 1px solid black;
+        box-shadow: 1px 2px 4px rgba(0,0,0,0.5);
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .box {
+        border: 2px solid black;
+      }
+
+      .botBox {
+          display:flex;
+          background-color:#8ba5e5;
+          width: 100%;
+          font-size: 20px;
+          border-radius: 20px;
+          box-shadow: 1px 2px 4px rgba(0,0,0,0.5);
+          border: 1px solid black;
+
+      }
+      .botBox span {
+        color: white;
+        padding: 10px;
+        width: 100%;
+      }
+
+
+    </style>
+</head>
+  <body>
+    <center>
+        <h1>
+          Query your Database!!
+        </h1>
+      </center>
+  <div class="box"></div>
+      <div class="boxed">
+        <div>
+          <div id="chatbox">
+            <p class="botText">
+              <div class="botBox"><span>Hi! Welcome dear User.</span></div>
+            </p>
+          </div>
+          <div id="userInput">
+            <input id="textInput" height="20px" type="text" name="msg" placeholder="Enter query" />
+          </div>
+        </div>
+      </div>
+  </body>
+  <script>
+    function getBotResponse() {
+      var rawText = $("#textInput").val();
+      var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+      $("#textInput").val("");
+      $("#chatbox").append(userHtml);
+      document
+        .getElementById("userInput")
+        .scrollIntoView({ block: "start", behavior: "smooth" });
+      $.get("/get", { msg: rawText }).done(function(data) {
+        var botHtml = '<p class="botBox"><span>' + data + "</span></p>";
+        $("#chatbox").append(botHtml);
+        document
+          .getElementById("userInput")
+          .scrollIntoView({ block: "start", behavior: "smooth" });
+      });
+    }
+    $("#textInput").keypress(function(e) {
+      if (e.which == 13) {
+        getBotResponse();
+      }
+    });
+</script>
+</html>

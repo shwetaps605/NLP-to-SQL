@@ -1,0 +1,9 @@
+Table1,Key-Table1,Table2,Key-Table2
+headquarter,SrcHqID,petitioner,SrcHqID
+beneficiary,BNFCorpID,petitioner,SrcPetitionerID
+caseprocess,SrcEprID,petitioner,SrcPetitionerID
+beneficiary,SrcBnfID,caseprocess,SrcBnfID
+caseapproval,SrcCaseID,caseprocess,SrcCaseID
+caseapproval,PetitionerKey,petitioner,PetitionerKey
+caseapproval,BeneficiaryKey,beneficiary,BeneficiaryKey
+beneficiary,SrcBnfID,document_details,SrcBnfID
