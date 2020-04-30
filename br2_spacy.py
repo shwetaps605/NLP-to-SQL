@@ -568,7 +568,7 @@ def generate_data(query):
 
     return data_to_be_displayed
 
-#nl_query="Display case approval date and petitioner names  where annual salary is equal to 50"
+#nl_query="show annual salary and beneficiary visa"
 #ss= generate_data(nl_query.lower())
 #print(ss)
 
