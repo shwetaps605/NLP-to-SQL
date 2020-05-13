@@ -78,7 +78,6 @@ try:
 		`FirstUSVisaType` varchar(400) NOT NULL,
 		`SupervisorEmailID` varchar(100) NOT NULL,
 		`MainBNFEmail` varchar(510) NOT NULL,
-		`AnnualSalary` varchar(100) NOT NULL,
 		`JobType` char(1) NOT NULL,
 		`ProjectName` varchar(200) NOT NULL,
 		`BNFWorkPhones` varchar(100) NOT NULL,
