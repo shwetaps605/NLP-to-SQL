@@ -25,10 +25,24 @@ all_stopwords.add("increasing")
 all_stopwords.add("decreasing")
 all_stopwords.add("order")
 all_stopwords.add("count")
+all_stopwords.add("equal")
+all_stopwords.add("reverse")
 
 synonyms= {'petitioner':["petitioner,company"],
 "beneficiary":["client,applicant,beneficiary"],
 "case":["case,application"]}
+
+sum_synonyms=['sum','total']
+count_synonyms=['count']
+average_synonyms=['mean','average']
+max_synonyms=['maximum','largest','highest','most']
+min_synonyms=['minimum','smallest','lowest','least']
+asc_synonyms=['ordered','sorted','alphabetical','alphabetically','increasing','ascending','alphabetic']
+desc_synonyms=['reverse','descending']
+equal_synonyms=['equal','=','==']
+greater_synonyms=['greater','larger','bigger','>']
+lesser_synonyms=['lesser','smaller','less','<']
+between_synonyms=['between','range']
  
 databaseServerIP            = "127.0.0.1"  # IP address of the MySQL database server
 databaseUserName            = "root"       # User name of the database server
@@ -40,10 +54,8 @@ cusrorType                  = pymysql.cursors.DictCursor
 data=pd.read_csv("mappings.csv")
 idx=list(data[data['keywords'].isnull()].index)
 data.drop(idx,axis=0,inplace=True)
-#print(data.head())
-
 PK_FK=pd.read_csv("Sheet2.csv")
-#print(PK_FK.head())
+
 
 def search(myDict, lookup):
     for key, value in myDict.items():
@@ -108,6 +120,8 @@ def get_pos(query):
     
     a=[]
     attr_list=[]
+    idx_list=[]
+    table=""
 
     for i in list_of_nouns :
         attr_list=list(data[data['keywords'].str.contains(i)]['Attributes'])
@@ -115,12 +129,15 @@ def get_pos(query):
         if (i==list_of_nouns[0]):
             a=list(set(a).union(attr_list))
             print(f"{i}: {a}\n")
-
+            idx_list=data[data['keywords'].str.contains(i)]['Attributes'].index
+           
         else:
             #ensure that the selected candidate attributes have all the keywords
             if (len(list(set(a).intersection(attr_list)))!=0):
                 a=list(set(a).intersection(attr_list))
             print(f"{i} : reduced to {a}\n")
+            idx_list=list(set(data[data['keywords'].str.contains(i)]['Attributes'].index).intersection(idx_list))
+           
 
     if(len(a)!=0):
         print(f"The possible attributes are:\n{a}\n")
@@ -136,19 +153,21 @@ def get_pos(query):
         
         a_list = max(sim_dict, key=sim_dict.get).split() 
         a_max= ",".join(map(str,a_list))
+       
+        a_idx=data[data['Attributes']==a_max].index
+        final_idx=list(set(a_idx).intersection(idx_list))
+       
+        for k in range(len(list(data['Attributes']))):
+            if list(data['Attributes'])[k]==a_max:
+                table=list(data['Table Name'])[k]
+                break
+        
 
     else:
         a_max=""
+        table=""
 
-    return a_max
-
-sum_synonyms=['sum','total']
-count_synonyms=['count']
-average_synonyms=['mean','average']
-max_synonyms=['maximum','largest','highest','most']
-min_synonyms=['minimum','smallest','lowest','least']
-asc_synonyms=['ordered','sorted','alphabetical','alphabetically','increasing','ascending','alphabetic']
-desc_synonyms=['reverse','descending']
+    return a_max,table
 
 def checkAggregateSum(q):
     li=q.lower().split()
@@ -202,7 +221,6 @@ def checkDescendingOrder(q):
 
 
 def get_attributes(clause):
-    #print("Searching for..",clause)
     tab_list=[]
     attributes_list=[]
     attribute_string=[]
@@ -214,7 +232,7 @@ def get_attributes(clause):
     attr=""
     
     que_list=re.split('and|,',clause)
-    print(que_list)
+   
     
     for i in que_list:
 
@@ -222,46 +240,37 @@ def get_attributes(clause):
             group_by_clause=re.split("each"," ".join(map(str,que_list)))
             group_by_attribute=get_pos(group_by_clause[1])
             group_by_string=f"GROUP BY {group_by_attribute}"
-            print("EACH KA SPLIT\n",group_by_clause)
-            print("EACH KA ATTRIBUTE\n",group_by_attribute)
 
         if(checkAggregateSum(i)):
-            print("SUM hai\n",i)
             a_str="SUM"
      
 
         elif(checkAggregateAverage(i)):
-            print("Average hai\n",i)
             a_str="AVG"
 
         elif(checkAggregateCount(i)):
-            print("Count hai\n",i)
             a_str="COUNT"
             
         elif(checkAggregateMax(i)):
-            print("Maximum hai\n",i)
             a_str="MAX"
             
 
         elif(checkAggregateMin(i)):
-            print("Minimum hai\n",i)
             a_str="MIN"
             
 
         elif(checkAscendingOrder(i)):
-            print("Ascending hai\n",i)
             o_str="ASC"  
 
         elif(checkDescendingOrder(i)):
-            print("Descending hai\n",i)
             o_str="DESC"  
         
         else:
             a_str=""
             o_str=""
 
-        print("###",i)
-        a=get_pos(i)
+        
+        a,table_name=get_pos(i)
 
         if(len(a)!=0):
             print(f"\nATTRIBUTE FOUND:{a}\n")
@@ -269,10 +278,8 @@ def get_attributes(clause):
             if a not in attributes_list:
                 attributes_list.append(a)
                 
-            tab=list(data[data['Attributes']==a]['Table Name'])
-            tables=",".join(map(str,tab))
-            if tables not in tab_list:
-                tab_list.append(tables)
+            if table_name not in tab_list:
+                tab_list.append(table_name)
 
             if(len(a_str)!=0):
                 attr=a_str+"("+str(a)+")"
@@ -285,7 +292,6 @@ def get_attributes(clause):
             if(len(o_str)!=0):
                 order_by_string+=str(a)+" "+o_str
 
-            print("HMMMM\n",attribute_string)
             print(f"The corresponding attributes are:{attributes_list}")
             print(f"The corresponding tables are:{tab_list}\n")
 
@@ -322,7 +328,6 @@ def get_pk_fk(tab_list):
             
             li=list(i)
             li=[w.lower() for w in li]
-            sorted(li, key=str.lower)
         
             print("\nATRRIBUTE 1 \n",li[0].lower())
             print("\nATRRIBUTE 2 \n",li[1].lower())
@@ -331,7 +336,6 @@ def get_pk_fk(tab_list):
             r1=PK_FK[(PK_FK['Table1']== li[1]) & (PK_FK['Table2']== li[0])]
 
             if(r.shape[0]!=0):
-                print("PEHLE WALE ME HU\n")
                 for k1 in list(r['Key-Table1']):
                     if k1 not in key_table1_list:
                         key_table1_list.append(k1)
@@ -341,10 +345,10 @@ def get_pk_fk(tab_list):
                         key_table2_list.append(k2)
 
                 w_string.append(f"{li[0]}.{k1}={li[1]}.{k2}")
+               
 
 
             elif(r1.shape[0]!=0):
-                print("DUSRE WALE ME HU\n")
                 for k1 in list(r1['Key-Table2']):
                     if k1 not in key_table1_list:
                         key_table1_list.append(k1)
@@ -353,13 +357,14 @@ def get_pk_fk(tab_list):
                     if k2 not in key_table2_list:
                         key_table2_list.append(k2)
                 
-                w_string.append(f"{li[1]}.{k1}={li[0]}.{k2}")
-                
+                w_string.append(f"{li[1]}.{k2}={li[0]}.{k1}")
+            
 
             else:
                 print("No PK-FK combinations found!!")
             
         where_string=" AND ".join(map(str,w_string))
+        print(f"\nPK-FK clause:{where_string}\n")
 
     else:
         print("NO WHERE CLAUSE NEEDED\n")
@@ -367,13 +372,8 @@ def get_pk_fk(tab_list):
         
     return where_string
 
-equal_synonyms=['equal','=','==']
-greater_synonyms=['greater','larger','bigger','>']
-lesser_synonyms=['lesser','smaller','less','<']
-
 
 def checkEqual(q):
-    print("EQUAL HAI\n")
     li=q.lower().split()
     if(len(list(set(equal_synonyms).intersection(li)))>0):
         return True
@@ -394,72 +394,98 @@ def checkLesser(string):
     else:
         return False
 
+def checkBetween(q):
+    li=q.lower().split()
+    if(len(list(set(between_synonyms).intersection(li)))>0):
+        return True
+    else:
+        return False
+
 def get_conditional_attributes2(clause):
     tab_list=[]
     attributes_list=[]
     attr_val={}
     main_query=[]
+    date_flag=False
     
     que_list=re.split('\sand\s|,',clause)
     
     for i in que_list:
 
         print("Conditional Clause:\n",i)
+
+        if(checkBetween(i)):
+            val_list=re.split('\sbetween\s|\srange\s',i)
+            bet_val_list=re.split('&|to',val_list[1].strip())
+            bet_val_first=bet_val_list[0].strip()
+            bet_val_second=bet_val_list[1].strip()
+            
+            if( (re.match('\d{4}-\d{2}-\d{2}', bet_val_first)) and (re.match('\d{4}-\d{2}-\d{2}',  bet_val_second)) ):
+                date_flag=True
+    
+            a,table_name=get_pos(val_list[0])
+
+            if(date_flag):
+                conditional_query= a+ " "+ "BETWEEN" + " "+f"'{bet_val_first}'" + " " + "AND" + " "+ f"'{bet_val_second}'"
+            else:
+                conditional_query= a+ " "+ "BETWEEN" + " "+f"{bet_val_first}" + " " + "AND" + " "+ f"{bet_val_second}"
+
+            main_query.append(conditional_query)
+            print("TABLE NAME\n",table_name)
+            tables=table_name
+            if tables not in tab_list:
+                tab_list.append(tables)
+            continue
+
+
+    
         
         if(checkEqual(i) and checkGreater(i)):
-            print("11\n")
             val_list=re.split('\sequal to\s|=|==',i)
             val=val_list[1:]
             sign=">="
         
         elif(checkEqual(i) and checkLesser(i)):
-            print("22\n")
             val_list=re.split('\sequal to\s|=|==',i)
             val=val_list[1:]
             sign="<="
         
         elif(checkEqual(i)):
-            print("33\n")
-            print("sdjhfsdf\n")
             val_list=re.split('\sequal to\s|=|==',i)
             val=val_list[1:]
             sign="="
-            print(val_list)
-            print(val[0])
-            
+    
         elif (checkGreater(i)):
-            print("44\n")
             val_list=re.split('greater than|larger than|bigger than|>',i)
             val=val_list[1:]
             sign=">"
             
         elif(checkLesser(i)):
-            print("55\n")
             val_list=re.split('less than|smaller than|<',i)
             val=val_list[1:]
             sign="<"
             
-        elif("between" in i.lower().split() or "range" in i.lower().split() ):
-            print("66\n")
-            val_list=re.split('\sbetween\s|\srange\s',i)
-            bet_val_list=re.split('-|to',val_list[1].strip())
-            bet_val_first=bet_val_list[0].strip()
-            bet_val_second=bet_val_list[1].strip()
-            a=get_pos(val_list[0])
-            conditional_query= a+ " "+ "BETWEEN" + " "+f"'{bet_val_first}'" + " " + "AND" + " "+ f"'{bet_val_second}'"
-            main_query.append(conditional_query)
-            tab=list(data[data['Attributes']==a]['Table Name'])
-            tables=",".join(map(str,tab))
-            if tables not in tab_list:
-                tab_list.append(tables)
-            continue
-    
-        a=get_pos(i)
-        conditional_query= a+ " "+ sign + " "+f"'{val[0].strip()}'"
+        a,table_name=get_pos(i)
+        if(checkAggregateAverage(val[0])):
+            attr,tab=get_pos(i)
+            val_string="(SELECT"+" "+"AVG"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+        elif(checkAggregateMax(i)):
+            attr,tab=get_pos(i)
+            val_string="(SELECT"+" "+"MAX"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+        elif(checkAggregateMin(i)):
+            attr,tab=get_pos(i)
+            val_string="(SELECT"+" "+"MIN"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+        elif(checkAggregateSum(i)):
+            attr,tab=get_pos(i)
+            val_string="(SELECT"+" "+"SUM"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+        else:
+            val_string=f"'{val[0].strip()}'"
+
+        conditional_query= a+ " "+ sign + " "+val_string
         main_query.append(conditional_query)
         attributes_list.append(a)
         tab=list(data[data['Attributes']==a]['Table Name'])
-        tables=",".join(map(str,tab))
+        tables=table_name
         if tables not in tab_list:
             tab_list.append(tables)
                 
@@ -479,6 +505,7 @@ def convert_into_sql(query):
         a2,t2,q2=get_conditional_attributes2(" ".join(map(str,conditional_clause)))
         conditional_query=" AND ".join(map(str,q2))
         t=list(set(t1).union(t2))
+        
     else:
         conditional_query=""
         t=t1
@@ -488,12 +515,19 @@ def convert_into_sql(query):
         attr_string=",".join(map(str,a1))
         tab_string=",".join(map(str,t))
         pk_fk_part=get_pk_fk(t)
+
+        print("\nCONDITIONAL QUERY:",conditional_query)
+        print("\nPK-FK",pk_fk_part)
     
         if(len(pk_fk_part)==0 and len(conditional_query)<=1 ):
             where_string=""
             sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string}"
         elif(len(pk_fk_part)>0 and len(conditional_query)<=1):
             where_string=pk_fk_part
+            sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string} \nWHERE {where_string}"
+
+        elif(len(pk_fk_part)==0 and len(conditional_query)>=1):
+            where_string=conditional_query
             sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string} \nWHERE {where_string}"
         else:
             where_string=pk_fk_part+" AND "+conditional_query
@@ -506,17 +540,13 @@ def convert_into_sql(query):
             sql_query+="\n"+group_by
 
     else:
-        print("CONASNA\n")
         sql_query=""
-
-    print("SQL JO BANI HAI:\n",sql_query)
 
     return sql_query
 
 
 
 def generate_data(query):
-
     connectionInstance   = pymysql.connect(host=databaseServerIP, 
     user=databaseUserName, 
     password=databaseUserPassword,
@@ -529,7 +559,7 @@ def generate_data(query):
     try:
         sql_query=convert_into_sql(query)
         if(len(sql_query)!=0):
-            print(f"SQL generated:\n\n{sql_query}\n")
+            
             NEWLINE='\n'
             try:
                 cur = connectionInstance.cursor()                       
@@ -539,16 +569,17 @@ def generate_data(query):
                 cur.execute(sqlQuery)
                 rows = cur.fetchall()
                 data_to_be_displayed=""
+                print(f"\nSQL generated:\n\n{sql_query}\n")
                     
                 attribute_names= [r.keys() for r in rows]
                 header=attribute_names[0]
-                data_to_be_displayed+="\t".join(map(str,list(header)))+NEWLINE
+                data_to_be_displayed+="\t\t".join(map(str,list(header)))+NEWLINE
+                print()
 
                 for row in rows:
                     records="\t\t\t\t".join(map(str,list(row.values())))
                     data_to_be_displayed+=records+NEWLINE
                 
-
             except Exception as e:
                 print("Exeception occured:{}".format(e))
                 data_to_be_displayed="NO RESULTS FOUND"
@@ -564,11 +595,9 @@ def generate_data(query):
         print("Exeception occured:{}".format(e))
         print("NO QUERY GENERATED\n")
         data_to_be_displayed="NO RESULTS FOUND"
-
-
     return data_to_be_displayed
 
-#nl_query="show annual salary and beneficiary visa"
+#nl_query="display headquarter names"
 #ss= generate_data(nl_query.lower())
 #print(ss)
 
