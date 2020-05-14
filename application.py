@@ -3,7 +3,7 @@ from br2_spacy import generate_data
 #import files
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+application =app = Flask(__name__)
 
 @app.route("/")
 def home():    
