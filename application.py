@@ -3,7 +3,7 @@ from br2_spacy import generate_data
 #import files
 from flask import Flask, render_template, request
 
-application =app = Flask(__name__)
+app = Flask(__name__)
 
 @app.route("/")
 def home():    
@@ -21,4 +21,4 @@ def get_bot_response():
     else:
         return data
 if __name__ == "__main__":    
-    app.run(host="0.0.0.0", port=80)
+    app.run()
