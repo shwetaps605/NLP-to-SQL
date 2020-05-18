@@ -1,6 +1,6 @@
 import pymysql
 
-databaseServerIP            = "127.0.0.1"  # IP address of the MySQL database server
+databaseServerIP            = "0.0.0.0"  # IP address of the MySQL database server
 databaseUserName            = "root"       # User name of the database server
 databaseUserPassword        = "root"           # Password for the database user
 charSet                     = "utf8mb4"     # Character set
