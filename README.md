@@ -24,6 +24,8 @@
 ###### 3. In pk_fk.csv you can provide the primary key-foreign key combinations for your specified database
 ###### 4. python br2_spacy.py - If you want to check the SQL generated manually
 ###### 5. python application.py - Starts the chatbot at localhost. Open your browser and type http://127.0.0.1:5000/ to view.
+![Screenshot (224)](https://user-images.githubusercontent.com/44373493/83419821-53910b00-a443-11ea-86eb-e497c8c1f4d1.png)
+
 
 
 
