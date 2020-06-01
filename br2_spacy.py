@@ -6,6 +6,7 @@ from fuzzywuzzy import fuzz
 from itertools import combinations
 import re
 import pymysql
+import datetime  
 
 
 all_stopwords = nlp.Defaults.stop_words
@@ -87,7 +88,7 @@ def get_all_nouns(data):
     
     #Removing the unnecessary stop words
     final_list=[word for word in final_list if not word in all_stopwords]
-    final_list=list(set(final_list))
+    #final_list=list(set(final_list))
     print(f"Removing the unnecessary words \nThe final list is:\n{final_list}\n")
 
     final_list2 = [ search(synonyms,w) for w in final_list if search(synonyms,w) is not None]
@@ -120,23 +121,30 @@ def get_pos(query):
     
     a=[]
     attr_list=[]
+    all_keywords_list=[]
     idx_list=[]
     table=""
 
     for i in list_of_nouns :
+        
         attr_list=list(data[data['keywords'].str.contains(i)]['Attributes'])
+        if(len(attr_list)!=0):
+            all_keywords_list.append(attr_list)
 
-        if (i==list_of_nouns[0]):
-            a=list(set(a).union(attr_list))
-            print(f"{i}: {a}\n")
-            idx_list=data[data['keywords'].str.contains(i)]['Attributes'].index
+    common_attrs=[]
+    for k in all_keywords_list:
+       
+        if(k == all_keywords_list[0]):
+            common_attrs=list(set(k).union(common_attrs))
            
         else:
-            #ensure that the selected candidate attributes have all the keywords
-            if (len(list(set(a).intersection(attr_list)))!=0):
-                a=list(set(a).intersection(attr_list))
-            print(f"{i} : reduced to {a}\n")
-            idx_list=list(set(data[data['keywords'].str.contains(i)]['Attributes'].index).intersection(idx_list))
+             if(len(list(set(k).intersection(common_attrs)))!=0):
+                common_attrs=list(set(k).intersection(common_attrs))
+                
+            
+    print("ALL THE COMMON ATTRIBUTES ARE:\n",common_attrs)
+    a=common_attrs
+
            
 
     if(len(a)!=0):
@@ -155,7 +163,7 @@ def get_pos(query):
         a_max= ",".join(map(str,a_list))
        
         a_idx=data[data['Attributes']==a_max].index
-        final_idx=list(set(a_idx).intersection(idx_list))
+        final_idx= a_idx
        
         for k in range(len(list(data['Attributes']))):
             if list(data['Attributes'])[k]==a_max:
@@ -237,9 +245,14 @@ def get_attributes(clause):
     for i in que_list:
 
         if ("each" in i.lower().split()):
-            group_by_clause=re.split("each"," ".join(map(str,que_list)))
-            group_by_attribute=get_pos(group_by_clause[1])
+            group_by_clause=re.split("each",i)
+            print(i)
+            print("GROUP BY CLAUSE: ",group_by_clause)
+            group_by_attribute,group_by_table=get_pos(group_by_clause[1])
             group_by_string=f"GROUP BY {group_by_attribute}"
+            print("GROUP BY WALA STRING YE HAI",group_by_string)
+            i=group_by_clause[0]
+            tab_list.append(group_by_table)
 
         if(checkAggregateSum(i)):
             a_str="SUM"
@@ -253,7 +266,6 @@ def get_attributes(clause):
             
         elif(checkAggregateMax(i)):
             a_str="MAX"
-            
 
         elif(checkAggregateMin(i)):
             a_str="MIN"
@@ -269,7 +281,6 @@ def get_attributes(clause):
             a_str=""
             o_str=""
 
-        
         a,table_name=get_pos(i)
 
         if(len(a)!=0):
@@ -412,7 +423,9 @@ def get_conditional_attributes2(clause):
     
     for i in que_list:
 
+        i_tokens=[token.orth_ for token in nlp(i) if not token.is_punct | token.is_space]
         print("Conditional Clause:\n",i)
+        i=" ".join(map(str,i_tokens))
 
         if(checkBetween(i)):
             val_list=re.split('\sbetween\s|\srange\s',i)
@@ -424,21 +437,18 @@ def get_conditional_attributes2(clause):
                 date_flag=True
     
             a,table_name=get_pos(val_list[0])
-
+            tab_and_attr=table_name+"."+a
+        
             if(date_flag):
-                conditional_query= a+ " "+ "BETWEEN" + " "+f"'{bet_val_first}'" + " " + "AND" + " "+ f"'{bet_val_second}'"
+                conditional_query= tab_and_attr+ " "+ "BETWEEN" + " "+f"'{bet_val_first}'" + " " + "AND" + " "+ f"'{bet_val_second}'"
             else:
-                conditional_query= a+ " "+ "BETWEEN" + " "+f"{bet_val_first}" + " " + "AND" + " "+ f"{bet_val_second}"
+                conditional_query= tab_and_attr+ " "+ "BETWEEN" + " "+f"{bet_val_first}" + " " + "AND" + " "+ f"{bet_val_second}"
 
             main_query.append(conditional_query)
-            print("TABLE NAME\n",table_name)
             tables=table_name
             if tables not in tab_list:
                 tab_list.append(tables)
             continue
-
-
-    
         
         if(checkEqual(i) and checkGreater(i)):
             val_list=re.split('\sequal to\s|=|==',i)
@@ -451,7 +461,7 @@ def get_conditional_attributes2(clause):
             sign="<="
         
         elif(checkEqual(i)):
-            val_list=re.split('\sequal to\s|=|==',i)
+            val_list=re.split('\sequal to\s|\s=\s|\s==\s',i)
             val=val_list[1:]
             sign="="
     
@@ -466,22 +476,68 @@ def get_conditional_attributes2(clause):
             sign="<"
             
         a,table_name=get_pos(i)
+        tab_and_attr=table_name+"."+a
+
+    
         if(checkAggregateAverage(val[0])):
             attr,tab=get_pos(i)
-            val_string="(SELECT"+" "+"AVG"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+            tab_and_attr=tab+"."+attr
+            val_string="(SELECT"+" "+"AVG"+"("+tab_and_attr+")"+" "+"FROM"+" "+tab+")"
         elif(checkAggregateMax(i)):
             attr,tab=get_pos(i)
-            val_string="(SELECT"+" "+"MAX"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+            tab_and_attr=tab+"."+attr
+            val_string="(SELECT"+" "+"MAX"+"("+tab_and_attr+")"+" "+"FROM"+" "+tab+")"
         elif(checkAggregateMin(i)):
             attr,tab=get_pos(i)
-            val_string="(SELECT"+" "+"MIN"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+            tab_and_attr=tab+"."+attr
+            val_string="(SELECT"+" "+"MIN"+"("+tab_and_attr+")"+" "+"FROM"+" "+tab+")"
         elif(checkAggregateSum(i)):
             attr,tab=get_pos(i)
-            val_string="(SELECT"+" "+"SUM"+"("+attr+")"+" "+"FROM"+" "+tab+")"
+            tab_and_attr=tab+"."+attr
+            val_string="(SELECT"+" "+"SUM"+"("+tab_and_attr+")"+" "+"FROM"+" "+tab+")"
         else:
             val_string=f"'{val[0].strip()}'"
 
-        conditional_query= a+ " "+ sign + " "+val_string
+        
+        if((data[data['Attributes']==a]['keywords'].str.contains("date").bool())):
+
+            
+            #For queries involving current/previous year
+            if(re.search( "year", val_string ) or re.search( "year", i )):
+
+                #Case I: The user is trying to look for current year entries
+                if(re.search( "current", val_string ) or re.search( "present", val_string )):
+                    conditional_query= "YEAR"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().year)
+                 
+                #Case II: The user is trying to look for previous year entries
+                elif(re.search( "previous", val_string ) or re.search( "last", val_string ) or re.search( "past", val_string )):
+                    conditional_query= "YEAR"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().year-1)
+
+                #Case III: The user is trying to look for any other year entry
+                else:
+                    conditional_query= "YEAR"+"("+tab_and_attr+")"+" "+ sign + " "+val_string
+
+
+
+            #For queries involving current/previous month
+            elif(re.search( "month", val_string) or re.search( "month", i)):
+
+                 #Case I: The user is trying to look for current month entries
+                if(re.search( "current", val_string ) or re.search( "present", val_string ) ):  
+                    conditional_query= "YEAR"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().year)+" "+"AND"+" "+"MONTH"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().month)
+                   
+                #Case II: The user is trying to look for previous month entries
+                elif(re.search( "previous", val_string ) or re.search( "last", val_string ) or re.search( "past", val_string )):
+                    conditional_query= "YEAR"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().year)+" "+"AND"+" "+"MONTH"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().month-1)
+
+                elif(re.search( "next", val_string ) ):
+                    conditional_query= "YEAR"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().year)+" "+"AND"+" "+"MONTH"+"("+tab_and_attr+")"+" "+ sign + " "+str(datetime.datetime.now().month+1)  
+
+
+        else:
+            conditional_query= tab_and_attr+ " "+ sign + " "+val_string
+            print(conditional_query)
+
         main_query.append(conditional_query)
         attributes_list.append(a)
         tab=list(data[data['Attributes']==a]['Table Name'])
@@ -508,30 +564,37 @@ def convert_into_sql(query):
         
     else:
         conditional_query=""
-        t=t1
+        t=list(set(t1))
 
     
     if (len(a1)!=0):
         attr_string=",".join(map(str,a1))
-        tab_string=",".join(map(str,t))
+        tab_string=" INNER JOIN ".join(map(str,t))
         pk_fk_part=get_pk_fk(t)
-
         print("\nCONDITIONAL QUERY:",conditional_query)
         print("\nPK-FK",pk_fk_part)
-    
+       
+
+        if 'Document_details' in t:
+            if 'Document_details' in conditional_query:
+                print("YEEEEEHAAAWWW\n")
+                tab_string=" INNER JOIN ".join(map(str,t))
+            else:
+                tab_string=" LEFT JOIN ".join(map(str,t))
+        
         if(len(pk_fk_part)==0 and len(conditional_query)<=1 ):
             where_string=""
-            sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string}"
+            sql_query=f"SELECT  {attr_string} \nFROM {tab_string}"
         elif(len(pk_fk_part)>0 and len(conditional_query)<=1):
             where_string=pk_fk_part
-            sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string} \nWHERE {where_string}"
+            sql_query=f"SELECT  {attr_string} \nFROM {tab_string} \nON {where_string}"
 
         elif(len(pk_fk_part)==0 and len(conditional_query)>=1):
             where_string=conditional_query
-            sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string} \nWHERE {where_string}"
+            sql_query=f"SELECT  {attr_string} \nFROM {tab_string} \nWHERE {where_string}"
         else:
-            where_string=pk_fk_part+" AND "+conditional_query
-            sql_query=f"SELECT DISTINCT {attr_string} \nFROM {tab_string} \nWHERE {where_string}"
+            where_string=pk_fk_part+"\nWHERE "+conditional_query
+            sql_query=f"SELECT {attr_string} \nFROM {tab_string} \nON {where_string}"
 
         if(len(order_by)!=0):
             sql_query+="\nORDER BY"+" "+order_by
@@ -573,11 +636,11 @@ def generate_data(query):
                     
                 attribute_names= [r.keys() for r in rows]
                 header=attribute_names[0]
-                data_to_be_displayed+="\t\t".join(map(str,list(header)))+NEWLINE
+                data_to_be_displayed+="\t\t\t".join(map(str,list(header)))+NEWLINE
                 print()
 
                 for row in rows:
-                    records="\t\t\t\t".join(map(str,list(row.values())))
+                    records="\t\t\t\t\t".join(map(str,list(row.values())))
                     data_to_be_displayed+=records+NEWLINE
                 
             except Exception as e:
@@ -597,9 +660,9 @@ def generate_data(query):
         data_to_be_displayed="NO RESULTS FOUND"
     return data_to_be_displayed
 
-#nl_query="display headquarter names"
-#ss= generate_data(nl_query.lower())
-#print(ss)
+nl_query="give me client employee id, client first name, corporation name of all clients whose visa expiring date = current month"
+ss= generate_data(nl_query.lower())
+print(ss)
 
 
 

@@ -5,10 +5,10 @@ headquarter,SrcOrgID,"source organisation ID, organisation ID"
 headquarter,HQFileNumber,headquarter file number
 headquarter,HeadQuarterName,"headquarter name,names of headquarters, headquartername"
 Petitioner,SrcPetitionerID,"src petitioner id,id of src petitioner,id of petitoner"
-Petitioner,PetitionerType,"petitioner type,type of petitioner"
-Petitioner,PetitionerName,"name of petitioner,petitioner name"
-Petitioner,FileNumber,file number of petitioner
-Petitioner,PetitionerTitle,"petitioner title,title of petitoner"
+Petitioner,PetitionerType,"petitioner type,type of petitioner,corporation,company"
+Petitioner,PetitionerName,"name of petitioner,petitioner name,corporation, company"
+Petitioner,FileNumber,"file number of petitioner,corporation,company"
+Petitioner,PetitionerTitle,"petitioner title,title of petitoner,corporation,company"
 Petitioner,SignatoryName,"signatory name,name of signatory"
 Petitioner,ContactPersonAddress,"contact person address,address of the contact person"
 Petitioner,SigningPersonName,"signing person name, name of signing person"
@@ -20,9 +20,9 @@ Petitioner,CorporationCaseManager,"corporation case manager,corporation applicat
 Petitioner,Corp_Case_Mgr,
 Petitioner,SrcHQId,
 Beneficiary,BeneficiaryKey,"beneficiary key, key of beneficiaries"
-Beneficiary,BNFType,"FN Type, applicant type, beneficiary type"
-Beneficiary,SrcBnfID,"source beneficiary id, id of beneficiary"
-Beneficiary,BNFEmployeeID,"FN employee id, applicant employee id, beneficiary employee id"
+Beneficiary,BNFType,"FN Type, applicant type, beneficiary type,client,applicant"
+Beneficiary,SrcBnfID,"source beneficiary id, id of beneficiary, id of client"
+Beneficiary,BNFEmployeeID,"FN employee id, applicant employee id, beneficiary employee id,client employee id"
 Beneficiary,FirstName,"client first name, applicant first name, beneficiary first name"
 Beneficiary,LastName,"client last name, applicant last name, beneficiary last name"
 Beneficiary,MiddleName,"client middle name, applicant  middle name, beneficiary  middle name"
@@ -71,7 +71,7 @@ caseprocess,CaseStatus,"case ctatus,application status"
 caseprocess,CaseName,"case name, application name"
 caseprocess,IsCaseActive,"is case active, is case inactive, is application active, is application inactive"
 caseprocess,CaseLongDescription,"case description, application description"
-caseprocess,CasePriorityDate,"case priority date, client priority date, application priority date, applicant priority date"
+caseprocess,CasePriorityDate,"case priority date, application priority date"
 caseprocess,SrcBnfID,
 caseprocess,SrcEprID,
 caseprocess,FirmCaseStatus,"custom case status, custom application status"
@@ -115,13 +115,13 @@ Document_details,AdvParoleReceiptNumber,"parole receipt"
 Document_details,AdvParoleValidFrom,"parole valid date"
 Document_details,AdvParoleValidTo,"parole valid date"
 Document_details,DS2019IssueDate,
-Document_details,DS2019Comments,
+Document_details,DS2019Comments,"ds comments"
 Document_details,DS2019ValidFrom,
 Document_details,DS2019ValidTo,
 Document_details,EADDocNumber,"ead doc number"
 Document_details,EADCategory,"ead category"
-Document_details,EADValidFrom,
-Document_details,EADValidTo,
+Document_details,EADValidFrom,"ead active/valid/validity from/starting date"
+Document_details,EADValidTo,"ead valid/active/validuty to/till/ending/end date"
 Document_details,EAD/APDDocNumber,
 Document_details,EAD/APDReceiptNumber,
 Document_details,EAD/APDValidFrom,
@@ -156,8 +156,8 @@ Document_details,ReEntryPermitValidTo,
 Document_details,VisaDocNumber,"visa number"
 Document_details,VisaCategory,"visa category"
 Document_details,VisaComments,"visa comments"
-Document_details,VisaValidFrom,
-Document_details,VisaValidTo,
+Document_details,VisaValidFrom,"visa active from date"
+Document_details,VisaValidTo,"visa expiring date"
 Document_details,I94_DS_YN,
 Document_details,EAD/APDType,
 Document_details,I129SValidFrom,

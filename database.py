@@ -1,6 +1,6 @@
 import pymysql
 
-databaseServerIP            = "0.0.0.0"  # IP address of the MySQL database server
+databaseServerIP            = "127.0.0.1"  # IP address of the MySQL database server
 databaseUserName            = "root"       # User name of the database server
 databaseUserPassword        = "root"           # Password for the database user
 charSet                     = "utf8mb4"     # Character set
@@ -303,7 +303,6 @@ try:
     "vtype_2",
     "sup_mail_2",
     "bnf_mail_2",
-    "100",
     "Y",
     "Pname2",
     "123488",
@@ -346,7 +345,6 @@ try:
     "vtype_1",
     "sup_mail_1",
     "bnf_mail_1",
-    "10000",
     "Y",
     "Pname1",
     "1234",
