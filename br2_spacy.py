@@ -55,7 +55,7 @@ cusrorType                  = pymysql.cursors.DictCursor
 data=pd.read_csv("mappings.csv")
 idx=list(data[data['keywords'].isnull()].index)
 data.drop(idx,axis=0,inplace=True)
-PK_FK=pd.read_csv("Sheet2.csv")
+PK_FK=pd.read_csv("pk_fk.csv")
 
 
 def search(myDict, lookup):
