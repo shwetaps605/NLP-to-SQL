@@ -156,8 +156,8 @@ Document_details,ReEntryPermitValidTo,
 Document_details,VisaDocNumber,"visa number"
 Document_details,VisaCategory,"visa category"
 Document_details,VisaComments,"visa comments"
-Document_details,VisaValidFrom,"visa active from date"
-Document_details,VisaValidTo,"visa expiring date"
+Document_details,VisaValidFrom,"visa active from dates"
+Document_details,VisaValidTo,"visa expiring date,expiry, last, dates"
 Document_details,I94_DS_YN,
 Document_details,EAD/APDType,
 Document_details,I129SValidFrom,

@@ -610,6 +610,7 @@ def convert_into_sql(query):
 
 
 def generate_data(query):
+    char1='\t'
     connectionInstance   = pymysql.connect(host=databaseServerIP, 
     user=databaseUserName, 
     password=databaseUserPassword,
@@ -636,11 +637,12 @@ def generate_data(query):
                     
                 attribute_names= [r.keys() for r in rows]
                 header=attribute_names[0]
-                data_to_be_displayed+="\t\t\t".join(map(str,list(header)))+NEWLINE
+                width1=char1*6
+                data_to_be_displayed+=width1.join(map(str,list(header)))+NEWLINE
                 print()
 
                 for row in rows:
-                    records="\t\t\t\t\t".join(map(str,list(row.values())))
+                    records=width1.join(map(str,list(row.values())))
                     data_to_be_displayed+=records+NEWLINE
                 
             except Exception as e:
@@ -660,9 +662,9 @@ def generate_data(query):
         data_to_be_displayed="NO RESULTS FOUND"
     return data_to_be_displayed
 
-nl_query="give me client employee id, client first name, corporation name of all clients whose visa expiring date = current month"
-ss= generate_data(nl_query.lower())
-print(ss)
+#nl_query="give me client EMPLOYEE id, client name, corporation NAMES of all clients "
+#ss= generate_data(nl_query.lower())
+#print(ss)
 
 
 

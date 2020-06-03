@@ -9,10 +9,11 @@ connectionInstance   = pymysql.connect(host=databaseServerIP, user=databaseUserN
 
 
 try:
-    cur = connectionInstance.cursor()                       
+    cur = connectionInstance.cursor()
+    cur.execute("CREATE DATABASE IF NOT EXISTS INS")                       
     cur .execute("USE INS")
 
-    createHeadquarterTable =  """
+    cur.execute( """
     CREATE TABLE headquarter (
         SrcHqID varchar(50) NOT NULL, 
         HeadQuarterKey int(4) NOT NULL, 
@@ -20,9 +21,9 @@ try:
         HeadQuarterName varchar(50) NOT NULL,
         HQFileNumber varchar(50) NOT NULL,
         PRIMARY KEY (SrcHqID))
-    """
+    """)
 
-    createPetitionerTable = """
+    cur.execute("""
     CREATE TABLE petitioner(
 			`PetitionerKey` int(4) NOT NULL unique,
 			`SrcPetitionerID` varchar(50) NOT NULL,
@@ -42,9 +43,9 @@ try:
 			`SrcHQId` varchar(50) NOT NULL,
 	 		 PRIMARY KEY (`SrcPetitionerID`)
         )
-    """
+    """)
 
-    createBeneficiaryTable= """
+    cur.execute("""
     CREATE TABLE Beneficiary(
 		`BeneficiaryKey` int(4) NOT NULL unique,
 		`BNFType` varchar(100) NOT NULL,
@@ -87,67 +88,67 @@ try:
 		`Work Address` varchar(100) NOT NULL,
 		 PRIMARY KEY (`SrcBnfID`)
          )
-    """
+    """)
 
-    createDocumentTable = """
+    cur.execute("""
     CREATE TABLE Document_details(
                     `SrcBnfId` varchar(50) NOT NULL,
-                    `ClientArrivalDate` datetime(6) NOT NULL,
-                    `ClientArrivalPlace_I94` varchar(100) NOT NULL,
-                    `AdvParoleReceiptNumber` varchar(200) NOT NULL,
-                    `AdvParoleValidFrom` datetime(6) NOT NULL,
-                    `AdvParoleValidTo` datetime(6) NOT NULL,
-                    `DS2019IssueDate` datetime(6) NOT NULL,
-                    `DS2019Comments` varchar(2000) NOT NULL,
-                    `DS2019ValidFrom` datetime(6) NOT NULL,
-                    `DS2019ValidTo` datetime(6) NOT NULL,
-                    `EADDocNumber` varchar(200) NOT NULL,
-                    `EADCategory` varchar(400) NOT NULL,
-                    `EADValidFrom` datetime(6) NOT NULL,
-                    `EADValidTo` datetime(6) NOT NULL,
-                    `EAD/APDDocNumber` varchar(200) NOT NULL,
-                    `EAD/APDReceiptNumber` varchar(100) NOT NULL,
-                    `EAD/APDValidFrom` datetime(6) NOT NULL,
-                    `EAD/APDValidTo` datetime(6) NOT NULL,
-                    `GreenCardValidFrom` datetime(6) NOT NULL,
-                    `GreenCardValidTo` datetime(6) NOT NULL,
-                    `HorLStatusStatus` varchar(400) NOT NULL,
-                    `HorLStatusValidFrom` datetime(6) NOT NULL,
-                    `HorLStatusValidTo` datetime(6) NOT NULL,
-                    `I94DocNumber` varchar(200) NOT NULL,
-                    `I94ValidFrom` datetime(6) NOT NULL,
-                    `I94ValidTo` datetime(6) NOT NULL,
-                    `I797Status` varchar(400) NOT NULL,
-                    `I797ApprovedDate` datetime(6) NOT NULL,
-                    `I797GovtSentDate` datetime(6) NOT NULL,
-                    `I797ApprovedReceiptDate` datetime(6) NOT NULL,
-                    `I797ValidFrom` datetime(6) NOT NULL,
-                    `I797ValidTo` datetime(6) NOT NULL,
-                    `PassportDocNumber` varchar(200) NOT NULL,
-                    `PassportValidFrom` datetime(6) NOT NULL,
-                    `PassportValidTo` datetime(6) NOT NULL,
-                    `PassportIssuePlace` varchar(200) NOT NULL,
-                    `PassportIssueState` varchar(200) NOT NULL,
-                    `PassportIssueCountry` varchar(200) NOT NULL,
-                    `PassportFirstName` varchar(200) NOT NULL,
-                    `PassportMiddleName` varchar(200) NOT NULL, 
-                    `PassportLastName` varchar(200) NOT NULL,
-                    `ReEntryPermitDocNumber` varchar(200) NOT NULL,
-                    `ReEntryPermitCategory` varchar(400) NOT NULL,
-                    `ReEntryPermitValidFrom` datetime(6) NOT NULL,
-                    `ReEntryPermitValidTo` datetime(6) NOT NULL,
-                    `VisaDocNumber` varchar(200) NOT NULL,
-                    `VisaCategory` varchar(400) NOT NULL,
-                    `VisaComments` varchar(2000) NOT NULL,
-                    `VisaValidFrom` datetime(6) NOT NULL,
-                    `VisaValidTo` datetime(6) NOT NULL,
-                    `EAD/APDType` varchar(400) NOT NULL, 
-                    `I94_DS_YN` char(1) NOT NULL,
-                    `I129SValidFrom` datetime(6) NOT NULL,
-                    `I129SValidTo` datetime(6) NOT NULL
+                    `ClientArrivalDate` datetime(6) ,
+                    `ClientArrivalPlace_I94` varchar(100) ,
+                    `AdvParoleReceiptNumber` varchar(200) ,
+                    `AdvParoleValidFrom` datetime(6) ,
+                    `AdvParoleValidTo` datetime(6) ,
+                    `DS2019IssueDate` datetime(6) ,
+                    `DS2019Comments` varchar(2000) ,
+                    `DS2019ValidFrom` datetime(6) ,
+                    `DS2019ValidTo` datetime(6) ,
+                    `EADDocNumber` varchar(200) ,
+                    `EADCategory` varchar(400) ,
+                    `EADValidFrom` datetime(6) ,
+                    `EADValidTo` datetime(6) ,
+                    `EAD/APDDocNumber` varchar(200) ,
+                    `EAD/APDReceiptNumber` varchar(100) ,
+                    `EAD/APDValidFrom` datetime(6) ,
+                    `EAD/APDValidTo` datetime(6) ,
+                    `GreenCardValidFrom` datetime(6) ,
+                    `GreenCardValidTo` datetime(6) ,
+                    `HorLStatusStatus` varchar(400) ,
+                    `HorLStatusValidFrom` datetime(6),
+                    `HorLStatusValidTo` datetime(6) ,
+                    `I94DocNumber` varchar(200) ,
+                    `I94ValidFrom` datetime(6) ,
+                    `I94ValidTo` datetime(6) ,
+                    `I797Status` varchar(400) ,
+                    `I797ApprovedDate` datetime(6) ,
+                    `I797GovtSentDate` datetime(6) ,
+                    `I797ApprovedReceiptDate` datetime(6) ,
+                    `I797ValidFrom` datetime(6) ,
+                    `I797ValidTo` datetime(6) ,
+                    `PassportDocNumber` varchar(200) ,
+                    `PassportValidFrom` datetime(6) ,
+                    `PassportValidTo` datetime(6) ,
+                    `PassportIssuePlace` varchar(200) ,
+                    `PassportIssueState` varchar(200) ,
+                    `PassportIssueCountry` varchar(200) ,
+                    `PassportFirstName` varchar(200),
+                    `PassportMiddleName` varchar(200) , 
+                    `PassportLastName` varchar(200),
+                    `ReEntryPermitDocNumber` varchar(200),
+                    `ReEntryPermitCategory` varchar(400),
+                    `ReEntryPermitValidFrom` datetime(6),
+                    `ReEntryPermitValidTo` datetime(6) ,
+                    `VisaDocNumber` varchar(200) ,
+                    `VisaCategory` varchar(400),
+                    `VisaComments` varchar(2000) ,
+                    `VisaValidFrom` datetime(6),
+                    `VisaValidTo` datetime(6),
+                    `EAD/APDType` varchar(400), 
+                    `I94_DS_YN` char(1),
+                    `I129SValidFrom` datetime(6) ,
+                    `I129SValidTo` datetime(6)
                     )
-    """
-    createCaseApprovalTable= """
+    """)
+    cur.execute("""
     CREATE TABLE caseapproval(
                     `PetitionerKey` int(4) NOT NULL,
                     `BeneficiaryKey` int(4) NOT NULL,
@@ -163,9 +164,9 @@ try:
                     `CaseMainReceiptDenialDate` datetime(6) NOT NULL, 
                     `CaseMainReceiptWithdrawnDate` datetime(6) NOT NULL
 )
-"""
+""")
 
-    createCaseProcessTable= """
+    cur.execute("""
     CREATE TABLE caseprocess(
                     `SrcCaseID` varchar(50) NOT NULL,
                     `CaseLCAID` varchar(100) NOT NULL,
@@ -206,9 +207,7 @@ try:
                     `NextStepToBeCompletedDueDate`datetime(6) NOT NULL,  
                      PRIMARY KEY (`SrcCaseID`)
                     )
-    """
-    
-    cur.execute(createHeadquarterTable)
+    """)
     
     cur.execute ("""
     ALTER TABLE `Petitioner`
@@ -355,6 +354,174 @@ try:
     """)
 
     cur.execute("""
+    insert into beneficiary values ( "3",
+    "BNF_type3",
+    "B3",
+    "bnf_emp_3",
+    "Sagar",
+    " ",
+    "Jaiswal",
+    "bnf_file_3",
+    "bnf_email_3",
+    "M",
+    "UG",
+    "USA",
+    "Indian",
+    "USA",
+    "M",
+    "r_type_3",
+    "0",
+    "1",
+    "Worker",
+    "visa3",
+    "exp_3",
+    "no status",
+    "sup_3",
+    "Italy",
+    "rel_3",
+    "main_bnf_id_3",
+    "main_bnf_corp_3",
+    "2017-11-05",
+    "2018-11-05",
+    "vtype_3",
+    "sup_mail_3",
+    "bnf_mail_3",
+    "Y",
+    "Pname3",
+    "123489",
+    "P2",
+    "COB_3",
+    "ma_3",
+    "wa_3")
+    """)
+
+    cur.execute("""
+    insert into beneficiary values ( "4",
+    "BNF_type4",
+    "B4",
+    "bnf_emp_4",
+    "Anju",
+    " ",
+    "Jaiswal",
+    "bnf_file_4",
+    "bnf_email_4",
+    "F",
+    "UG",
+    "USA",
+    "Indian",
+    "USA",
+    "M",
+    "r_type_4",
+    "0",
+    "1",
+    "Worker",
+    "visa4",
+    "exp_4",
+    "no status",
+    "sup_4",
+    "Italy",
+    "rel_4",
+    "main_bnf_id_4",
+    "main_bnf_corp_4",
+    "2016-11-05",
+    "2017-11-05",
+    "vtype_4",
+    "sup_mail_4",
+    "bnf_mail_4",
+    "Y",
+    "Pname4",
+    "123489",
+    "P1",
+    "COB_4",
+    "ma_4",
+    "wa_4")
+    """)
+
+    cur.execute("""
+    insert into beneficiary values ( "5",
+    "BNF_type5",
+    "B5",
+    "bnf_emp_5",
+    "Kunal",
+    "k ",
+    "Kamra",
+    "bnf_file_5",
+    "bnf_email_5",
+    "M",
+    "UG",
+    "USA",
+    "Italian",
+    "Italy",
+    "M",
+    "r_type_5",
+    "0",
+    "1",
+    "Manager",
+    "visa5",
+    "exp_5",
+    "no status",
+    "sup_5",
+    "India",
+    "rel_5",
+    "main_bnf_id_5",
+    "main_bnf_corp_5",
+    "2016-11-05",
+    "2019-11-05",
+    "vtype_5",
+    "sup_mail_5",
+    "bnf_mail_5",
+    "Y",
+    "Pname5",
+    "1234009",
+    "P2",
+    "COB_5",
+    "ma_5",
+    "wa_5")
+    """)
+
+    cur.execute("""
+    insert into beneficiary values ( "6",
+    "BNF_type6",
+    "B6",
+    "bnf_emp_6",
+    "Miguel",
+    "Nee",
+    "Chaan",
+    "bnf_file_6",
+    "bnf_email_6",
+    "M",
+    "UG",
+    "USA",
+    "Italian",
+    "Italy",
+    "M",
+    "r_type_6",
+    "0",
+    "1",
+    "Manager",
+    "visa6",
+    "exp_6",
+    "no status",
+    "sup_6",
+    "India",
+    "rel_6",
+    "main_bnf_id_6",
+    "main_bnf_corp_6",
+    "2017-11-05",
+    "2020-11-05",
+    "vtype_6",
+    "sup_mail_6",
+    "bnf_mail_6",
+    "Y",
+    "Pname6",
+    "1234122",
+    "P1",
+    "COB_5",
+    "ma_5",
+    "wa_5")
+    """)
+
+    cur.execute("""
     insert into caseprocess values(
     "C1",
     "LCAID_1",
@@ -436,6 +603,90 @@ try:
     "2020-01-21",
     "ns_name_2",
     "2021-01-10")
+    """)
+
+    cur.execute("""
+    insert into caseprocess values(
+    "C3",
+    "LCAID_3",
+    "456xyz",
+    "2020-05-11",
+    "2016-05-11",
+    "desc_3",
+    "H-1B",
+    "notes_3",
+    "USA",
+    "P",
+    "case_name_3",
+    "1",
+    "descp_3",
+    "2020-09-19",
+    "B3",
+    "P2",
+    "fc_status_3",
+    "cat_3",
+    "usa",
+    "9000",
+    "No",
+    "yes",
+    "case_cat_3"
+    "pet_type_3",
+    "case_sub_cat_3",
+    "case_group_3",
+    "ID3",
+    "2017-08-19",
+    "Case_desc_3",
+    "la_id_3",
+    "2018-07-12",
+    "20-10-12",
+    "2021-12-12",
+    "case_main_3",
+    "ls_name3",
+    "2020-03-21",
+    "ns_name_3",
+    "2021-09-12")
+    """)
+
+    cur.execute("""
+    insert into caseprocess values(
+    "C4",
+    "LCAID_4",
+    "956xyz",
+    "2020-07-12",
+    "2016-05-11",
+    "desc_4",
+    "H-1B",
+    "notes_4",
+    "USA",
+    "P",
+    "case_name_4",
+    "1",
+    "descp_4",
+    "2020-09-19",
+    "B4",
+    "P1",
+    "fc_status_4",
+    "cat_4",
+    "usa",
+    "2000",
+    "No",
+    "yes",
+    "case_cat_4"
+    "pet_type_4",
+    "case_sub_cat_4",
+    "case_group_4",
+    "ID4",
+    "2017-08-19",
+    "Case_desc_4",
+    "la_id_4",
+    "2018-07-12",
+    "20-10-12",
+    "2021-12-12",
+    "case_main_4",
+    "ls_name4",
+    "2020-03-21",
+    "ns_name_4",
+    "2021-09-12")
     """)
 
     cur.execute("""
@@ -586,6 +837,41 @@ try:
     "B",
     "2013-02-21",
     "2018-02-12")
+    """)
+
+    cur.execute("""
+    UPDATE petitioner
+    SET petitionerName="Samsung"
+    WHERE PetitionerKey=1
+    """)
+
+    cur.execute("""
+    UPDATE petitioner
+    SET petitionerName="Microsoft"
+    WHERE PetitionerKey=2
+    """)
+
+    cur.execute("""
+    UPDATE caseprocess
+    SET CaseFiledDate="2020-01-23"
+    WHERE SrcCaseID='C1'
+    """)
+
+    cur.execute("""
+    UPDATE document_details
+    SET VisaValidTo="2020-06-27"
+    WHERE SrcBnfId='B1'""")
+
+    cur.execute("""
+    UPDATE document_details
+    SET VisaValidTo="2020-06-01"
+    WHERE SrcBnfId='B2'
+    """)
+
+    cur.execute("""
+    UPDATE document_details
+    SET DS2019Comments=" "
+    WHERE SrcBnfId='B1'
     """)
 
     cur.execute("commit")
