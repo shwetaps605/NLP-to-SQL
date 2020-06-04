@@ -2,7 +2,7 @@ import pymysql
 
 databaseServerIP            = "127.0.0.1"  # IP address of the MySQL database server
 databaseUserName            = "root"       # User name of the database server
-databaseUserPassword        = "root"           # Password for the database user
+databaseUserPassword        = "admin"           # Password for the database user
 charSet                     = "utf8mb4"     # Character set
 cusrorType                  = pymysql.cursors.DictCursor
 connectionInstance   = pymysql.connect(host=databaseServerIP, user=databaseUserName, password=databaseUserPassword,charset=charSet,cursorclass=cusrorType)
@@ -10,8 +10,8 @@ connectionInstance   = pymysql.connect(host=databaseServerIP, user=databaseUserN
 
 try:
     cur = connectionInstance.cursor()
-    cur.execute("CREATE DATABASE IF NOT EXISTS INS")                       
-    cur .execute("USE INS")
+    cur.execute("CREATE DATABASE IF NOT EXISTS INSDB")                       
+    cur.execute("USE INSDB")
 
     cur.execute( """
     CREATE TABLE headquarter (
@@ -46,7 +46,7 @@ try:
     """)
 
     cur.execute("""
-    CREATE TABLE Beneficiary(
+    CREATE TABLE beneficiary(
 		`BeneficiaryKey` int(4) NOT NULL unique,
 		`BNFType` varchar(100) NOT NULL,
 		`SrcBnfID` varchar(50) NOT NULL,
@@ -91,7 +91,7 @@ try:
     """)
 
     cur.execute("""
-    CREATE TABLE Document_details(
+    CREATE TABLE document_details(
                     `SrcBnfId` varchar(50) NOT NULL,
                     `ClientArrivalDate` datetime(6) ,
                     `ClientArrivalPlace_I94` varchar(100) ,
@@ -210,28 +210,28 @@ try:
     """)
     
     cur.execute ("""
-    ALTER TABLE `Petitioner`
-    ADD CONSTRAINT `petitioner_ibfk_1` FOREIGN KEY (`SrcHQId`) REFERENCES `Headquarter` (`SrcHqID`)
+    ALTER TABLE `petitioner`
+    ADD CONSTRAINT `petitioner_ibfk_1` FOREIGN KEY (`SrcHQId`) REFERENCES `headquarter` (`SrcHqID`)
     """)
 
     cur.execute ("""
-    ALTER TABLE `Beneficiary`
-    ADD CONSTRAINT FOREIGN KEY (`BNFCorpID`) REFERENCES `Petitioner` (`SrcPetitionerID`)
+    ALTER TABLE `beneficiary`
+    ADD CONSTRAINT FOREIGN KEY (`BNFCorpID`) REFERENCES `petitioner` (`SrcPetitionerID`)
     """)
 
     cur.execute("""
     ALTER TABLE `caseprocess`
-    ADD CONSTRAINT FOREIGN KEY (`SrcEprID`) REFERENCES `Petitioner` (`SrcPetitionerID`)
+    ADD CONSTRAINT FOREIGN KEY (`SrcEprID`) REFERENCES `petitioner` (`SrcPetitionerID`)
     """)
 
     cur.execute("""
     ALTER TABLE `caseprocess`
-    ADD CONSTRAINT  FOREIGN KEY (`SrcBnfID`) REFERENCES `Beneficiary` (`SrcBnfID`)
+    ADD CONSTRAINT  FOREIGN KEY (`SrcBnfID`) REFERENCES `beneficiary` (`SrcBnfID`)
     """)
 
     cur.execute("""
-    ALTER TABLE `Document_details`
-    ADD CONSTRAINT  FOREIGN KEY (`SrcBnfID`) REFERENCES `Beneficiary` (`SrcBnfID`)
+    ALTER TABLE `document_details`
+    ADD CONSTRAINT  FOREIGN KEY (`SrcBnfID`) REFERENCES `beneficiary` (`SrcBnfID`)
     """)
 
     cur.execute("""
@@ -241,12 +241,12 @@ try:
 
     cur.execute("""
     ALTER TABLE `caseapproval`
-  ADD CONSTRAINT  FOREIGN KEY (`PetitionerKey`) REFERENCES `Petitioner` (`PetitionerKey`)
+  ADD CONSTRAINT  FOREIGN KEY (`PetitionerKey`) REFERENCES `petitioner` (`PetitionerKey`)
     """)
 
     cur.execute("""
     ALTER TABLE `caseapproval`
-    ADD CONSTRAINT  FOREIGN KEY (`BeneficiaryKey`) REFERENCES `Beneficiary` (`BeneficiaryKey`)
+    ADD CONSTRAINT  FOREIGN KEY (`BeneficiaryKey`) REFERENCES `beneficiary` (`BeneficiaryKey`)
     """)
 
     cur.execute("""
@@ -724,7 +724,7 @@ try:
     """)
 
     cur.execute("""
-    insert into Document_details values(
+    insert into document_details values(
     "B1",
     "2010-02-11",
     "place_1",
@@ -782,7 +782,7 @@ try:
     """)
 
     cur.execute("""
-    insert into Document_details values(
+    insert into document_details values(
     "B2",
     "2011-02-11",
     "place_2",

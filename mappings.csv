@@ -4,60 +4,60 @@ headquarter,HeadQuarterKey,"key of headquarter, headquarter key"
 headquarter,SrcOrgID,"source organisation ID, organisation ID"
 headquarter,HQFileNumber,headquarter file number
 headquarter,HeadQuarterName,"headquarter name,names of headquarters, headquartername"
-Petitioner,SrcPetitionerID,"src petitioner id,id of src petitioner,id of petitoner"
-Petitioner,PetitionerType,"petitioner type,type of petitioner,corporation,company"
-Petitioner,PetitionerName,"name of petitioner,petitioner name,corporation, company"
-Petitioner,FileNumber,"file number of petitioner,corporation,company"
-Petitioner,PetitionerTitle,"petitioner title,title of petitoner,corporation,company"
-Petitioner,SignatoryName,"signatory name,name of signatory"
-Petitioner,ContactPersonAddress,"contact person address,address of the contact person"
-Petitioner,SigningPersonName,"signing person name, name of signing person"
-Petitioner,ContactPersoneEmail,"contact person email,email of contact person,email id of contact person,contact person email id"
-Petitioner,SigningPersonFirstName,"signing person first name,first name of signing person,name of signing person,signing person name"
-Petitioner,SigningPersonLastName,"signing person last name,last name of signing person"
-Petitioner,SigningPersonMiddleName,"signing person middle name,middle name of signing person"
-Petitioner,CorporationCaseManager,"corporation case manager,corporation application manager,manager of corporation case"
-Petitioner,Corp_Case_Mgr,
-Petitioner,SrcHQId,
-Beneficiary,BeneficiaryKey,"beneficiary key, key of beneficiaries"
-Beneficiary,BNFType,"FN Type, applicant type, beneficiary type,client,applicant"
-Beneficiary,SrcBnfID,"source beneficiary id, id of beneficiary, id of client"
-Beneficiary,BNFEmployeeID,"FN employee id, applicant employee id, beneficiary employee id,client employee id"
-Beneficiary,FirstName,"client first name, applicant first name, beneficiary first name"
-Beneficiary,LastName,"client last name, applicant last name, beneficiary last name"
-Beneficiary,MiddleName,"client middle name, applicant  middle name, beneficiary  middle name"
-Beneficiary,BNFFileNumber,"client file number, applicant file number, beneficiary file number"
-Beneficiary,BNFEmail,"email of client,email of applicant, email of beneficiary, email, client's email, beneficiary's email, applicant's email, mail, mail ID"
-Beneficiary,Gender,"gender,client,applicant,beneficiary"
-Beneficiary,Qualification,"qualification,client,applicant,beneficiary"
-Beneficiary,CountryOfBirth,"birth country, country of birth, country born in,client,applicant,beneficiary"
-Beneficiary,Nationality,"nationality ,client,applicant,beneficiary"
-Beneficiary,CitizenshipCountry,"country of citizenship, citizenship country,client,applicant,beneficiary"
-Beneficiary,MaritalStatus,"marital status,client,applicant,beneficiary"
-Beneficiary,RelationshipType,"relation type, relationship type,client,applicant,beneficiary"
-Beneficiary,IsBNFPrimary,"beneficiary primary,client,applicant"
-Beneficiary,IsBNFActive,"beneficiary active,client,applicant"
-Beneficiary,Occupation,"occupation, occupation of beneficiary,applicant,client"
-Beneficiary,BeneficiaryVisa,"visa of beneficiary,client,applicant,visas"
-Beneficiary,Experience,"Experience of beneficiary,applicant,client"
-Beneficiary,ImmigrationStatus,"Immigration Status of beneficiary,client,applicant"
-Beneficiary,Supervisors,"Supervisor of beneficiary,client,applicant"
-Beneficiary,PassportIssueCountry,"Passport Issue Country,Passport Country of beneficiary,applicant,client"
-Beneficiary,BNFRelation,"beneficiary relation,client,applicant"
-Beneficiary,MainBNFID,"main beneficiary,client,applicant ID"
-Beneficiary,MainBNFCorpID,"main company,petitioner ID,beneficiary,client,applicant"
-Beneficiary,DateOfBirth,"dob, date of birth, dateofbirth, birthdate of beneficiary,client,applicant"
-Beneficiary,FirstUSEntry,"first US entry of beneficiary,applicant,client"
-Beneficiary,FirstUSVisaType,"first US visa type of beneficiary, first visa type,client,applicant,visas"
-Beneficiary,SupervisorEmailID,"supervisors mail, supervisor email address, beneficiary,client,applicant"
-Beneficiary,MainBNFEmail,"beneficiary,client,applicant email"
-Beneficiary,JobType,"job type, type of job, beneficiary,client,applicant job"
-Beneficiary,ProjectName,project name
-Beneficiary,BNFworkPhones,"work phones of beneficiary,applicant,client"
-Beneficiary,BNFCorpID,
-Beneficiary,Spouse_COB,"spouse_cob of beneficiary,client,applicant"
-Beneficiary,Mailing Address,"mailing address of beneficiary,client,applicant"
-Beneficiary,Work Address,"work address of beneficiary.client,applicant"
+petitioner,SrcPetitionerID,"src petitioner id,id of src petitioner,id of petitoner"
+petitioner,PetitionerType,"petitioner type,type of petitioner,corporation,company"
+petitioner,PetitionerName,"name of petitioner,petitioner name,corporation, company"
+petitioner,FileNumber,"file number of petitioner,corporation,company"
+petitioner,PetitionerTitle,"petitioner title,title of petitoner,corporation,company"
+petitioner,SignatoryName,"signatory name,name of signatory"
+petitioner,ContactPersonAddress,"contact person address,address of the contact person"
+petitioner,SigningPersonName,"signing person name, name of signing person"
+petitioner,ContactPersoneEmail,"contact person email,email of contact person,email id of contact person,contact person email id"
+petitioner,SigningPersonFirstName,"signing person first name,first name of signing person,name of signing person,signing person name"
+petitioner,SigningPersonLastName,"signing person last name,last name of signing person"
+petitioner,SigningPersonMiddleName,"signing person middle name,middle name of signing person"
+petitioner,CorporationCaseManager,"corporation case manager,corporation application manager,manager of corporation case"
+petitioner,Corp_Case_Mgr,
+petitioner,SrcHQId,
+beneficiary,BeneficiaryKey,"beneficiary key, key of beneficiaries"
+beneficiary,BNFType,"FN Type, applicant type, beneficiary type,client,applicant"
+beneficiary,SrcBnfID,"source beneficiary id, id of beneficiary, id of client"
+beneficiary,BNFEmployeeID,"FN employee id, applicant employee id, beneficiary employee id,client employee id"
+beneficiary,FirstName,"client first name, applicant first name, beneficiary first name"
+beneficiary,LastName,"client last name, applicant last name, beneficiary last name"
+beneficiary,MiddleName,"client middle name, applicant  middle name, beneficiary  middle name"
+beneficiary,BNFFileNumber,"client file number, applicant file number, beneficiary file number"
+beneficiary,BNFEmail,"email of client,email of applicant, email of beneficiary, email, client's email, beneficiary's email, applicant's email, mail, mail ID"
+beneficiary,Gender,"gender,client,applicant,beneficiary"
+beneficiary,Qualification,"qualification,client,applicant,beneficiary"
+beneficiary,CountryOfBirth,"birth country, country of birth, country born in,client,applicant,beneficiary"
+beneficiary,Nationality,"nationality ,client,applicant,beneficiary"
+beneficiary,CitizenshipCountry,"country of citizenship, citizenship country,client,applicant,beneficiary"
+beneficiary,MaritalStatus,"marital status,client,applicant,beneficiary"
+beneficiary,RelationshipType,"relation type, relationship type,client,applicant,beneficiary"
+beneficiary,IsBNFPrimary,"beneficiary primary,client,applicant"
+beneficiary,IsBNFActive,"beneficiary active,client,applicant"
+beneficiary,Occupation,"occupation, occupation of beneficiary,applicant,client"
+beneficiary,BeneficiaryVisa,"visa of beneficiary,client,applicant,visas"
+beneficiary,Experience,"Experience of beneficiary,applicant,client"
+beneficiary,ImmigrationStatus,"Immigration Status of beneficiary,client,applicant"
+beneficiary,Supervisors,"Supervisor of beneficiary,client,applicant"
+beneficiary,PassportIssueCountry,"Passport Issue Country,Passport Country of beneficiary,applicant,client"
+beneficiary,BNFRelation,"beneficiary relation,client,applicant"
+beneficiary,MainBNFID,"main beneficiary,client,applicant ID"
+beneficiary,MainBNFCorpID,"main company,petitioner ID,beneficiary,client,applicant"
+beneficiary,DateOfBirth,"dob, date of birth, dateofbirth, birthdate of beneficiary,client,applicant"
+beneficiary,FirstUSEntry,"first US entry of beneficiary,applicant,client"
+beneficiary,FirstUSVisaType,"first US visa type of beneficiary, first visa type,client,applicant,visas"
+beneficiary,SupervisorEmailID,"supervisors mail, supervisor email address, beneficiary,client,applicant"
+beneficiary,MainBNFEmail,"beneficiary,client,applicant email"
+beneficiary,JobType,"job type, type of job, beneficiary,client,applicant job"
+beneficiary,ProjectName,project name
+beneficiary,BNFworkPhones,"work phones of beneficiary,applicant,client"
+beneficiary,BNFCorpID,
+beneficiary,Spouse_COB,"spouse_cob of beneficiary,client,applicant"
+beneficiary,Mailing Address,"mailing address of beneficiary,client,applicant"
+beneficiary,Work Address,"work address of beneficiary.client,applicant"
 caseprocess,SrcCaseID,"case id.application"
 caseprocess,CaseLCAID,"case lca id,application lca id"
 caseprocess,CaseFileNumber,"case file number,application file number"
@@ -108,57 +108,57 @@ caseapproval,ApprovalDate,"approval date of case,application"
 caseapproval,CaseDeniedDate,"denied date of case,application"
 caseapproval,CaseMainReceiptDenialDate,"main receipt denial date of case,application"
 caseapproval,CaseMainReceiptWithdrawnDate,"main receipt withdrawal date of case,application"
-Document_details,SrcBnfId,
-Document_details,ClientArrivalDate,"client arrival date, beneficiary arrival date, applicant"
-Document_details,ClientArrivalPlace_I94,"client arrival place, beneficiary arrival place,applicant"
-Document_details,AdvParoleReceiptNumber,"parole receipt"
-Document_details,AdvParoleValidFrom,"parole valid date"
-Document_details,AdvParoleValidTo,"parole valid date"
-Document_details,DS2019IssueDate,
-Document_details,DS2019Comments,"ds comments"
-Document_details,DS2019ValidFrom,
-Document_details,DS2019ValidTo,
-Document_details,EADDocNumber,"ead doc number"
-Document_details,EADCategory,"ead category"
-Document_details,EADValidFrom,"ead active/valid/validity from/starting date"
-Document_details,EADValidTo,"ead valid/active/validuty to/till/ending/end date"
-Document_details,EAD/APDDocNumber,
-Document_details,EAD/APDReceiptNumber,
-Document_details,EAD/APDValidFrom,
-Document_details,EAD/APDValidTo,
-Document_details,GreenCardValidFrom,"green card valid from date"
-Document_details,GreenCardValidTo,"green card valid to date "
-Document_details,HorLStatusStatus,
-Document_details,HorLStatusValidFrom,
-Document_details,HorLStatusValidTo,
-Document_details,I94DocNumber,
-Document_details,I94ValidFrom,
-Document_details,I94ValidTo,
-Document_details,I797Status,
-Document_details,I797ApprovedDate,
-Document_details,I797GovtSentDate,
-Document_details,I797ApprovedReceiptDate,
-Document_details,I797ValidFrom,
-Document_details,I797ValidTo,
-Document_details,PassportDocNumber,passport number
-Document_details,PassportValidFrom,
-Document_details,PassportValidTo,
-Document_details,PassportIssuePlace,"passport issue place"
-Document_details,PassportIssueState,"passport issue state"
-Document_details,PassportIssueCountry,"passport issue country,nation"
-Document_details,PassportFirstName,passport first name
-Document_details,PassportMiddleName,passport middle name
-Document_details,PassportLastName,passport last name
-Document_details,ReEntryPermitDocNumber,
-Document_details,ReEntryPermitCategory,
-Document_details,ReEntryPermitValidFrom,
-Document_details,ReEntryPermitValidTo,
-Document_details,VisaDocNumber,"visa number"
-Document_details,VisaCategory,"visa category"
-Document_details,VisaComments,"visa comments"
-Document_details,VisaValidFrom,"visa active from dates"
-Document_details,VisaValidTo,"visa expiring date,expiry, last, dates"
-Document_details,I94_DS_YN,
-Document_details,EAD/APDType,
-Document_details,I129SValidFrom,
-Document_details,I129SValidTo,
+document_details,SrcBnfId,
+document_details,ClientArrivalDate,"client arrival date, beneficiary arrival date, applicant"
+document_details,ClientArrivalPlace_I94,"client arrival place, beneficiary arrival place,applicant"
+document_details,AdvParoleReceiptNumber,"parole receipt"
+document_details,AdvParoleValidFrom,"parole valid date"
+document_details,AdvParoleValidTo,"parole valid date"
+document_details,DS2019IssueDate,
+document_details,DS2019Comments,"ds comments"
+document_details,DS2019ValidFrom,
+document_details,DS2019ValidTo,
+document_details,EADDocNumber,"ead doc number"
+document_details,EADCategory,"ead category"
+document_details,EADValidFrom,"ead active/valid/validity from/starting date"
+document_details,EADValidTo,"ead valid/active/validuty to/till/ending/end date"
+document_details,EAD/APDDocNumber,
+document_details,EAD/APDReceiptNumber,
+document_details,EAD/APDValidFrom,
+document_details,EAD/APDValidTo,
+document_details,GreenCardValidFrom,"green card valid from date"
+document_details,GreenCardValidTo,"green card valid to date "
+document_details,HorLStatusStatus,
+document_details,HorLStatusValidFrom,
+document_details,HorLStatusValidTo,
+document_details,I94DocNumber,
+document_details,I94ValidFrom,
+document_details,I94ValidTo,
+document_details,I797Status,
+document_details,I797ApprovedDate,
+document_details,I797GovtSentDate,
+document_details,I797ApprovedReceiptDate,
+document_details,I797ValidFrom,
+document_details,I797ValidTo,
+document_details,PassportDocNumber,passport number
+document_details,PassportValidFrom,
+document_details,PassportValidTo,
+document_details,PassportIssuePlace,"passport issue place"
+document_details,PassportIssueState,"passport issue state"
+document_details,PassportIssueCountry,"passport issue country,nation"
+document_details,PassportFirstName,passport first name
+document_details,PassportMiddleName,passport middle name
+document_details,PassportLastName,passport last name
+document_details,ReEntryPermitDocNumber,
+document_details,ReEntryPermitCategory,
+document_details,ReEntryPermitValidFrom,
+document_details,ReEntryPermitValidTo,
+document_details,VisaDocNumber,"visa number"
+document_details,VisaCategory,"visa category"
+document_details,VisaComments,"visa comments"
+document_details,VisaValidFrom,"visa active from dates"
+document_details,VisaValidTo,"visa expiring date,expiry, last, dates"
+document_details,I94_DS_YN,
+document_details,EAD/APDType,
+document_details,I129SValidFrom,
+document_details,I129SValidTo,

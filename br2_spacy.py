@@ -627,7 +627,7 @@ def generate_data(query):
             NEWLINE='\n'
             try:
                 cur = connectionInstance.cursor()                       
-                cur.execute("USE INS")
+                cur.execute("USE INSDB")
 
                 sqlQuery    = sql_query
                 cur.execute(sqlQuery)
